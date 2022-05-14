@@ -1,4 +1,18 @@
-/* /* .row {
-    content: "";
-
+.col {
+  
+    border-color: black;
+}
+/* 
+.row {
+    border-style: solid;
+    border-color: black;
 } */
+
+#btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
