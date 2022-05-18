@@ -1,73 +1,46 @@
 
-
 $(document).ready(function() {   
 
     var clickedTime = 0;
     $("#btn").click(function(){
-        // generate a random number between 1 and 31
-   
-        function randomNumber(min, max) {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() *(max - min + 1)) + min;
+        function numberRange(start, end) {
+            //fill an array with sequential numbers
+            return new Array(end - start).fill().map((e, i) => i + start);
         }
-
-        //gernerate photo name
-        function photoName () {
-            let photo = "photos/img_" + randomNumber(1,30) + ".png";
-            return photo
-        }
-    
-
+            
         function pickedPhotos() {
-            //create array to hold all random numbers
-            let theChosenOnes = []; 
-            //go through 20 times
-            for(let i=0; i<20 ; i++) {
-                //grab unique photo
-                let photo = noRepeats(theChosenOnes);
-
-                //make sure the photo is not undefined
-                if(photo != undefined) {
-                    //push to array if it's not undefined
-                    theChosenOnes.push(photo);
-                } else {
-                    // if it undefined, find a new photo to add
-                    noUndefined(theChosenOnes);
-                } 
-            }
+            //create an array of images I can use
+            let images = numberRange(1, 31).map((e) => "photos/img_" + e + ".png");
+            
+            //shuffle images
+            let shuffledImages = shuffle(images);
     
-            return theChosenOnes;
+            //pick first 20 
+            return shuffledImages.slice(0, 20);
         }
 
-        //make sure the random photo is not already in the array
-        function noRepeats(theChosenOnes) {
-            //get photo name
-            let photo = photoName();
-            //if photo is not in array
-            if(!theChosenOnes.includes(photo)) {
-                //return the photo name
-                return photo
-            } else {
-                //if it is, find a new photo
-                noRepeats(theChosenOnes);
+        //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+        function shuffle(array) {
+            let currentIndex = array.length,  randomIndex;
+          
+            // While there remain elements to shuffle.
+            while (currentIndex != 0) {
+          
+              // Pick a remaining element.
+              randomIndex = Math.floor(Math.random() * currentIndex);
+              currentIndex--;
+          
+              // And swap it with the current element.
+              [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
             }
-        }
-
-
-        function noUndefined(theChosenOnes) {
-            let photo = noRepeats(theChosenOnes);
-            if(photo != undefined) {
-                theChosenOnes.push(photo);
-            } else {
-                noUndefined(theChosenOnes);
-            }
-        }
-
+          
+            return array;
+          }
+    
         //create game cards 
-        function createGameCard(theChosenOnes) {
-            pickedPhotos();
-            let chosenPhotos = pickedPhotos(theChosenOnes);
+        function createGameCard() {
+            let chosenPhotos = pickedPhotos();
             for(i=0; i<chosenPhotos.length; i++) {
                 $('#card').append('<div class="col"> <img src= "' + chosenPhotos[i] + '" ' + ' class="img-thumbnail" alt="..."></div>');   
             }
